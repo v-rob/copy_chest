@@ -21,8 +21,8 @@ local function get_infinite_chest_formspec(inv)
 	return formspec
 end
 
-minetest.register_node("infinite_chest:chest", {
-	description = "Infinite Chest",
+minetest.register_node("copy_chest:chest", {
+	description = "Copy Chest",
 	tiles = {"default_chest_top.png"},
 	is_ground_content = false,
 	groups = {choppy = 2, oddly_breakable_by_hand = 2},
@@ -30,27 +30,27 @@ minetest.register_node("infinite_chest:chest", {
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", get_infinite_chest_formspec(nil))
-		meta:set_string( 'infotext', ('Infinite Chest'))
+		meta:set_string( 'infotext', ('Copy Chest'))
 		local inv = meta:get_inventory()
 		inv:set_size('put_in', 1 * 1)
 		inv:set_size('take_from', 1 * 1)
 	end,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name() ..
-			" moves stuff to infinite chest at " .. minetest.pos_to_string(pos))
+			" moves stuff to copy chest at " .. minetest.pos_to_string(pos))
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", get_infinite_chest_formspec(meta:get_inventory()))
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name() ..
-			" takes stuff from infinite chest at " .. minetest.pos_to_string(pos))
+			" takes stuff from copy chest at " .. minetest.pos_to_string(pos))
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", get_infinite_chest_formspec(meta:get_inventory()))
 	end,
 })
 
 minetest.register_abm({
-	nodenames = {'infinite_chest:chest'},
+	nodenames = {'copy_chest:chest'},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node)
@@ -66,6 +66,6 @@ minetest.register_abm({
 
 if minetest.get_modpath("hopper") and hopper ~= nil and hopper.add_container ~= nil then
 	hopper:add_container({
-		{"top", "infinite_chest:chest", "take_from"},
+		{"top", "copy_chest:chest", "take_from"},
 	})
 end
